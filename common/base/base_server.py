@@ -24,11 +24,14 @@ class BaseServer(ABC):
     def send(self, msg: Message) -> bool: pass
 
     @abstractmethod
-    def close(self): pass
+    def close(self, **kwargs): pass
 
-    def stop(self, *args, **kwargs): 
+    @abstractmethod
+    def handle_error(self, error: Exception) -> bool: pass
+
+    def stop(self): 
         self._run = False
-
+    
     def run(self): 
         logging.debug(f'Starting server {type(self)}')
 
@@ -38,11 +41,13 @@ class BaseServer(ABC):
             try:
                 msg = self.recv()
                 if msg and self._message_handler:
-                    # logging.debug(msg.to_bytes()[0:10])
                     self._message_handler.handle_message(self, msg)
-            except zmq.error.ZMQError: pass
             except Exception as e: 
-                logging.debug('Error:', str(e))
+                is_handled = self.handle_error(e)
+                if not is_handled:
+                    logging.debug('Error:' + str(e))
+                    self.stop()
+                    raise e
 
             # Since we are blocking on receive,
             # give user chance to kill server.

@@ -1,5 +1,5 @@
 import logging
-
+import time
 
 from base.base_server import BaseServer
 
@@ -15,7 +15,7 @@ class ZmqServer(BaseServer):
         message_handler: BaseMessageHandler):
 
         super().__init__(message_handler)
-        self._context = zmq.Context()
+        
 
         self._server_config: ServerConfig = server_config
         self._socket: zmq.Socket = None
@@ -25,7 +25,8 @@ class ZmqServer(BaseServer):
         port = self._server_config.port
 
         logging.debug(f'Starting server on port {port}')
-
+        
+        self._context = zmq.Context()
         self._socket = self._context.socket(zmq.REP)
 
         if hasattr(self._server_config, 'polling_timeout'):
@@ -38,6 +39,15 @@ class ZmqServer(BaseServer):
         self._socket.bind(f'tcp://*:{port}')
 
         return True
+    
+    def handle_error(self, error: Exception):
+        # This code should be unnecessary, but for sake of time
+        # and lack of understandig, let's put this in
+        # for better user experience.
+        if 'Resource temporarily unavailable' not in str(error):
+            self.close(destroy=True)
+        
+        return True
 
     def recv(self) -> Message:
         logging.debug('Waiting for message.')
@@ -47,9 +57,15 @@ class ZmqServer(BaseServer):
 
         return m
 
+    ## TODO: Probably not going to use this, rip it out
+    ## when certain.
     def send(self, msg: bytes) -> bool: 
         self._socket.send(msg)
 
-    def close(self):
+    def close(self, **kwargs):
         logging.debug('Closing socket.')
         self._socket.close()
+
+        if 'destroy' in kwargs and kwargs['destroy']:
+            self._context.destroy()
+            self.start()

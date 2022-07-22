@@ -9,7 +9,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, os.path.join(parentdir, 'server'))
 sys.path.insert(0, os.path.join(parentdir, 'common'))
 
-from zmq_server import ZmqServer
+from zmq_communication.zmq_server import ZmqServer
 from reflect_msg_handler import ReflectMessageHandler
 from configurations import ServerConfig
 import log

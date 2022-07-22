@@ -29,8 +29,9 @@ class ZmqConnection(Connection):
         # logging.debug('Sending: ', str(serialized)[0:10])
         self._socket.send(serialized)
     
-    def close(self):
+    def close(self, **kwargs):
         self._socket.close()
-        self._context.destroy()
+        if 'destroy' in kwargs and kwargs['destroy']:
+            self._context.destroy()
 
     

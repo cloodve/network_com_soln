@@ -12,8 +12,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, os.path.join(parentdir, 'client'))
 sys.path.insert(0, os.path.join(parentdir, 'common'))
 
-from zmq_server import ZmqServer
-from zmq_connection import ZmqConnection
+from zmq_communication.zmq_server import ZmqServer
+from zmq_communication.zmq_connection import ZmqConnection
 from save_msg_handler import SaveMsgHandler
 from configurations import ClientConfig, ClientConnectionConfig, DATA_FILE
 from message import Message
