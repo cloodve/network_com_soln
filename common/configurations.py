@@ -31,3 +31,17 @@ class ClientConfig:
 class ClientConnectionConfig:
     ip = '127.0.0.1'
     port = 5555
+
+queue_size = 800000
+
+@dataclass
+class SharedMemoryClientConfig:
+    shared_mem_send = 'LetsShareMemoryClient_Client'
+    shared_mem_send_lock = 'client_lock'
+    queue_size = queue_size
+
+@dataclass
+class SharedMemoryServerConfig:
+    shared_mem_send = 'LetsShareMemoryClient_Server'
+    shared_mem_send_lock = 'server_lock'
+    queue_size = queue_size

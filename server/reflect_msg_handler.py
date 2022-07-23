@@ -1,6 +1,6 @@
 import logging
 import time
-from xmlrpc.client import Server
+# from xmlrpc.client import Server
 
 from base.message_handler import BaseMessageHandler
 from message import Message
@@ -19,7 +19,6 @@ class ReflectMessageHandler(BaseMessageHandler):
         
         connection = ZmqConnection()
         connection.connect(conf)
-
-        msg_bytes = message.to_bytes()
+        
         connection.send(message)
         connection.close()

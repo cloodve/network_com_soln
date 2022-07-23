@@ -11,7 +11,6 @@ from configurations import ServerConfig
 class ZmqServer(BaseServer):
 
     def __init__(self, 
-        server_config: ServerConfig, 
         message_handler: BaseMessageHandler):
 
         super().__init__(message_handler)
