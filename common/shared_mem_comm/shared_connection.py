@@ -6,6 +6,10 @@ from message import Message
 
 
 class SharedMemoryConnector(Connection):
+    """
+    Use shared memory to send messages between a client and server.
+    
+    """
 
     def __init__(self, config):
         self._config = config
@@ -15,19 +19,16 @@ class SharedMemoryConnector(Connection):
     def send(self, msg: Message):
         self._queue =  shared_memory.SharedMemory(
             name=self._config.shared_mem_send,
-            # create=True, 
             size=self._config.queue_size
         )
         self._lock = shared_memory.SharedMemory(
             name=self._config.shared_mem_send_lock,
-            # create=True, 
             size=1
         )
         self._queue_size = self._config.queue_size
         with SharedMemoryLock(self._lock):
             buf = self._queue.buf
             b = msg.to_bytes()
-            print(f'TEST: {b[:100]}')
             buf[:len(b)] = b
 
     def close(self): pass

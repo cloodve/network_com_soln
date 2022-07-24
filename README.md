@@ -1,50 +1,34 @@
-# network_com_hw: Take-home programming project
-## Objective
-Build two independent inter-communicating processes (A & B) able to exchange data using two different means of data transfer/messaging services. The processes could be headless - run from a command line, or have a GUI (You will provide instructions for using them).
+# Communicate file between client and server HW
+## Installation
+1. Clone the repository. 
+2. Install a version of python 3.x (preferably 3.10).
+3. Install zmq - "pip install pyzmq"
+4. Run the application:
+- There are two sets of files in the ./bin folder.
+- One set of files is for a ZeroMQ client, server connection
+- A second set of files for shared memory client, server connection
 
-For communication use any two of several methods available, such as…
-- Network sockets
-- ZeroMQ (or equivalent for chosen programming language)
-- Netty
-- Other messaging brokers (could use a test broker hosted online)
-- Other
+To Run the application, bring up a terminal (I tested on Windows), navigate to
+the bin directory. Start first by running the server for either ZeroMQ or the 
+shared-memory client/server. There should be logging to the terminal as the 
+application runs. Open a ***second terminal***, navigate to the ./bin directory 
+and run the respective client. The output file (i.e. output.stl) will show
+up in the bin directory. 
 
-Using one method of communication, Process A must connect with B and send contents of the provided data file cad_mesh.stl (a CAD geometry). On receiving the data, B, which has earlier established a second channel of communication with A, must return the data. A will then save the received data in a file called output.stl (cad_mesh.stl must match output.stl).
+## Notes:
+- There is a configuration file for ZeroMQ to set IPs, and defaults to localhost.
+  Theoretically, the client and server could run on separate machines, as long
+  as there is no firewall in the way, and connectivity between the hosts.
+- The shared memory queue version of the client-server will need to run on the same host.
+- Due to size of the code, did not include proper documentation for all classes/functions, such 
+  as documenting function inputs and outputs.
+- There are many, many ways to distribute and deploy python applications. Examples include raw-python,
+  Docker containers, virtual environments, egg files, RPMs, etc. Also, there are many systems to target, 
+  which include (but not limited to) Windows, Linux, K8s, etc.. Because of packaging and targeting,
+  distribution and running was kept very simplistic.
+- Perhaps one more improvement would be to include a single server and client script and a command
+  line argument to specify ZeroMQ vs. shared-memory server/client. Also, bash scripts to run on linux, 
+  but due to lack of linux, I was unable to test.
 
-## Requirements
-- The application/s may run on a single Windows or Linux workstation; may be connected to the web or not. Alternatively the two processes A & B could be deployed and run on two independent work stations. 
-- Developed in the candidate's choice of programming language.
-- Candidates must provide executables for functional evaluation, as well as code for review and discussion during subsequent follow-up interview discussion. The delivered package must include any necessary configuration or other files.
-- The deliverables must include documentation that could be followed to download, install and/or run the application.
-- The code must be organized and well-documented. 
-- The effort is expected to take between 2 - 8 hours based on the candidate’s experience in network application development.
-
-## Grading Criteria
-- We’re looking for code that is clean, readable, performant and maintainable.
-- The developer must think through the process of deploying and using the solution and provide necessary documentation.
-- The choice of messaging services used will not matter as long as the final code performs as expected. 
-
-## Optional Simpler Scope (to reduce candidate's time and effort)
-- Implement one-way communication from process A to B using any single method of data transfer.
-- Process B is to save received data in a file called output.stl
-
-## Optional Challenge (beyond original scope)
-- In Process B, implement a parser that reads the .stl file, extracts each vertex in the file and generates an Output.csv file containing the vertices.
-- The Output.csv file must be formatted to contain data (x,y,z) for each vertex on an independent line. The positional data coordinate values, each a float, must have 4 significant digits following the decimal point. 
-- Return the output.csv file to process B.
-- If not familiar, the candidate is expected to independently conduct research online to understand the format of an .STL file, which is a commonly used CAD format.
-
-## Submission
-In order to submit the assignment, do the following:
-
-1. Navigate to GitHub's project import page: [https://github.com/new/import](https://github.com/new/import)
-
-2. In the box titled "Your old repository's clone URL", paste the homework repository's link: [https://github.com/Machina-Labs/network_com_hw](https://github.com/Machina-Labs/network_com_hw)
-
-3. In the box titled "Repository Name", add a name for your local homework (ex. `network_com_soln`)
-
-4. Set privacy level to "Public", then click "Begin Import" button at bottom of the page.
-
-5. Develop your homework solution in the cloned repository and push it to Github when you're done. Extra points for good Git hygiene.
-
-6. Send us the link to your repository.
+## Author
+[Eric First](https://github.com/cloodve)

@@ -9,13 +9,17 @@ from configurations import ServerConnectionConfig
 
 
 class ReflectMessageHandler(BaseMessageHandler):
+    """
+    Message handler ot send ZeroMQ based messages back to the client.
+
+    """
 
     def handle_message(self, server, message: Message): 
+        logging.debug('Received message from client, reflecting to server.')
         
         conf = ServerConnectionConfig()
 
         ip, port = conf.ip, conf.port        
-        # logging.debug(f'Server is reflecting message back to client at ip {ip} and port {port}')
         
         connection = ZmqConnection()
         connection.connect(conf)

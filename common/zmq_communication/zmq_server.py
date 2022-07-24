@@ -1,5 +1,4 @@
 import logging
-import time
 
 from base.base_server import BaseServer
 
@@ -11,12 +10,15 @@ from configurations import ServerConfig
 class ZmqServer(BaseServer):
 
     def __init__(self, 
+        config,
         message_handler: BaseMessageHandler):
+        """
+        :param message_handler: Server passes received messages to a message handler.
+        """
 
-        super().__init__(message_handler)
+        super().__init__(config, message_handler)
         
-
-        self._server_config: ServerConfig = server_config
+        self._server_config: ServerConfig = config
         self._socket: zmq.Socket = None
         
     

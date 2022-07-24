@@ -1,14 +1,17 @@
 from multiprocessing import shared_memory
 import logging
 import time
-import copy
 
 from base.base_server import BaseServer
 from base.message_handler import BaseMessageHandler
-# from configurations import SharedMemoryConfig
 from message import Message
 
+
 class SharedMemoryLock:
+    """
+    Basic locking mechanism to aid in sharing of memory between two processes.
+
+    """
     def __init__(self, lock):
         self._lock = lock
     
@@ -25,16 +28,22 @@ class SharedMemoryLock:
 
 
 class SharedMemoryServer(BaseServer):
+    """
+    Use shared memory to setup a server to communicate between two processes.
+    """
     def __init__(self, 
         config,
         processor: BaseMessageHandler):
 
-        super().__init__(processor)
+        super().__init__(config, processor)
 
         logging.debug(f'Server listening on {config.shared_mem_send} with lock {config.shared_mem_send_lock}')
         
         self._message_handler = processor
 
+        ## Shared memory may only be created once. In our model,
+        ## server objects are responsible for creation and the connection
+        ## object is a user of it (i.e. connection object does not create).
         self._queue = shared_memory.SharedMemory(
             name=config.shared_mem_send,
             create=True, 
@@ -49,7 +58,7 @@ class SharedMemoryServer(BaseServer):
         self._queue_size = config.queue_size
 
     def start(self): 
-        # Clean out array
+        ## Ensure the memory is clear
         with SharedMemoryLock(self._lock):
             self._queue.buf[:] = bytearray([0]*self._queue_size)
 
@@ -72,6 +81,8 @@ class SharedMemoryServer(BaseServer):
 
         return Message(data) if found_data else None
     
+
+    ## Following functions are N/A for memory communication.
     def send(self, msg: Message): pass
 
     def close(self, **kwargs): pass

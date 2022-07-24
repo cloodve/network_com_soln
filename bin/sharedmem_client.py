@@ -40,15 +40,12 @@ if __name__ == '__main__':
     t.start()
     time.sleep(3)
 
-
     logging.debug('Started listening server')
 
     ## Build connection to server
     shared_mem_config = SharedMemoryClientConfig()
     connection = SharedMemoryConnector(shared_mem_config)
     
-    
-    print(f'STL: {stl_file[:20]}')
     msg = Message(stl_file)
 
     connection.send(msg)

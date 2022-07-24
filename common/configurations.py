@@ -1,9 +1,14 @@
 import os, inspect
 from dataclasses import dataclass
 
+###############################################################################
+# Generic config objects. Depending on needs the functionality of this 
+# object class could be drastically increased. For example, to work in
+# conjection with file-based configurations (i.e. ini, json, yml, etc...)
+###############################################################################
+
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-# sys.path.insert(0, os.path.join(parentdir, 'data'))
 
 ## Data File Name
 FILE_NAME = 'cad_mesh.stl'

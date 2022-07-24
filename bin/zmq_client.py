@@ -23,7 +23,6 @@ import log
 
 if __name__ == '__main__':
     def run_client_server():
-        # time.sleep(3)
         config = ClientConfig()
         message_handler = SaveMsgHandler()
         server = ZmqServer(config, message_handler)
@@ -32,14 +31,14 @@ if __name__ == '__main__':
         server.run()
         server.close()
 
+    ## Running the server on another thread does not
+    ## allow one to use cntl-c to stop the process without
+    ## extra work. An undesirable trait when working with the
+    ## server.
     t = threading.Thread(target=run_client_server)
     
     t.start()
     time.sleep(3)
-
-    # if server:
-    #     signal.signal(signal.SIGINT, server.stop)
-    #     atexit.register(server.close)
 
     logging.debug('Started listening server')
 
@@ -49,13 +48,12 @@ if __name__ == '__main__':
     connection.connect(client_connection_config)
 
     stl_file = open(DATA_FILE, 'rb').read()
-    # print(stl_file)
+
     msg = Message(stl_file)
 
     connection.send(msg)
     connection.close()
 
-    # time.sleep(5)
     ## Let's wait for the server to stop
     t.join()
     logging.debug('Exiting client.')
