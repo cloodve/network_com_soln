@@ -13,7 +13,7 @@ the bin directory. Start first by running the server for either ZeroMQ or the
 shared-memory client/server. There should be logging to the terminal as the 
 application runs. Open a ***second terminal***, navigate to the ./bin directory 
 and run the respective client. The output file (i.e. output.stl) will show
-up in the bin directory. 
+up in the ./data directory. 
 
 ## Notes:
 - There is a configuration file for ZeroMQ to set IPs, and defaults to localhost.
@@ -29,6 +29,8 @@ up in the bin directory.
 - Perhaps one more improvement would be to include a single server and client script and a command
   line argument to specify ZeroMQ vs. shared-memory server/client. Also, bash scripts to run on linux, 
   but due to lack of linux, I was unable to test.
+- Lots of object-orientation was used, which in some cases may seem like abuse, but would allow for greater
+  flexibility.
 
 ## Author
 [Eric First](https://github.com/cloodve)
